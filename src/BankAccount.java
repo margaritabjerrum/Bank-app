@@ -1,14 +1,23 @@
 public class BankAccount {
+
+  private int id;
+  private String name;
   private double balance;
 
   public BankAccount() {
 
   }
 
-  public BankAccount(double balance) {
+  public BankAccount(int id, String name, double balance) {
+    this.id = id;
+    this.name = name;
     this.balance = balance;
   }
 
+
+  public int getId() {
+    return id;
+  }
   public double getBalance() {
     return balance;
   }

@@ -1,33 +1,52 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
   public static void main(String[] args) {
 
-    BankAccount account1 = new BankAccount();
-    BankAccount account2 = new BankAccount();
+    ArrayList<BankAccount> accounts = new ArrayList<>();
+    accounts.add(new BankAccount(1001, "Margarita", 0));
+    accounts.add(new BankAccount(1002, "Allan", 0));
+
 
     Scanner sc = new Scanner(System.in);
 
-    boolean isRightAccountNumber = true;
-    BankAccount selectedAccount = account1;
-    do {
-      System.out.println("Enter your account name:");
-      String accountSelectionTest = sc.nextLine();
-        switch (accountSelectionTest) {
-          case "account1":
-            selectedAccount = account1;
-            isRightAccountNumber = false;
-            break;
-          case "account2":
-            selectedAccount = account2;
-            isRightAccountNumber = false;
-            break;
-          default:
-            System.out.println("Invalid input. Please enter correct account number");
-        }
+    BankAccount selectedAccount = null;
 
+  do {
+    System.out.println("Do you have an existing account? (Y/N)");
+    String accountExists = sc.nextLine().toUpperCase();
+
+    if (accountExists.contains("Y")) {
+
+        System.out.println("Enter your account id:");
+        int id = sc.nextInt();
+
+        for (BankAccount account : accounts) {
+          if (account.getId() == id) {
+            selectedAccount = account;
+            System.out.println("Login successful");
+          }
+        }
+    } else if (accountExists.contains("N")) {
+      System.out.println("Enter your name to create new account:");
+      String name = sc.nextLine();
+      int id = accounts.size() + 1001;
+      selectedAccount = new BankAccount(id, name, 0);
+      accounts.add(selectedAccount);
+      System.out.println("Your account was created successfully");
+      System.out.println("Your account number for login in is --- " + id + " ---");
+    } else {
+      System.out.println("Invalid input. Please try again");
     }
-    while (isRightAccountNumber);
+
+  }
+
+  while(selectedAccount == null);
+
+
+
 
     while (true) {
       System.out.println("Choose your action");
@@ -57,9 +76,19 @@ public class Main {
           break;
 
         case 4:
+          System.out.println("Enter account ID for transfer:");
+          int id = sc.nextInt();
           System.out.println("Enter amount to transfer:");
           double transferAmount = sc.nextDouble();
-            selectedAccount.transfer(account2, transferAmount);
+          BankAccount accToTransferTo = null;
+          for (BankAccount customer : accounts) {
+            if (customer.getId() == id) {
+              accToTransferTo = customer;
+            } else {
+              System.out.println("Invalid Id");
+            }
+          }
+            selectedAccount.transfer(accToTransferTo, transferAmount);
           break;
 
         case 0:
