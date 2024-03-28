@@ -9,15 +9,23 @@ public class BankAccount {
     this.balance = balance;
   }
 
+  public double getBalance() {
+    return balance;
+  }
+
+  public void setBalance(double balance) {
+    this.balance = balance;
+  }
+
   public double deposit(double amount) {
-    System.out.println(amount + "€ was added to your account :)" );
+    System.out.println(amount + "€ was added to your account" );
     return balance += amount;
   }
   public double withdraw(double amount) {
     if (balance < amount) {
       System.out.println("Error: insufficient funds");
     } else {
-      System.out.println(amount + "€ was withdrawn from your account :(" );
+      System.out.println(amount + "€ was withdrawn from your account" );
       balance -= amount;
     }
     return balance;

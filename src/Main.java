@@ -1,37 +1,75 @@
+import java.util.Scanner;
+
 public class Main {
   public static void main(String[] args) {
 
-    BankAccount account1 = new BankAccount(1000);
-    BankAccount account2 = new BankAccount(1500);
+    BankAccount account1 = new BankAccount();
+    BankAccount account2 = new BankAccount();
 
-    //Print original balance
-    System.out.println("Original account balance");
-    account1.printBalance();
-    account2.printBalance();
-    System.out.println("-------------------------");
+    Scanner sc = new Scanner(System.in);
 
-    //Add funds to account
-    System.out.println("Account balance after funds were added");
-    account1.deposit(100);
-    account2.deposit(200);
-    account1.printBalance();
-    account2.printBalance();
-    System.out.println("-------------------------");
+    boolean isRightAccountNumber = true;
+    BankAccount selectedAccount = account1;
+    do {
+      System.out.println("Enter your account name:");
+      String accountSelectionTest = sc.nextLine();
+        switch (accountSelectionTest) {
+          case "account1":
+            selectedAccount = account1;
+            isRightAccountNumber = false;
+            break;
+          case "account2":
+            selectedAccount = account2;
+            isRightAccountNumber = false;
+            break;
+          default:
+            System.out.println("Invalid input. Please enter correct account number");
+        }
 
-    //Withdraw funds from account
-    System.out.println("Account balance after funds were withdrawn");
-    account1.withdraw(400);
-    account2.withdraw(2000);
-    account1.printBalance();
-    account2.printBalance();
-    System.out.println("-------------------------");
+    }
+    while (isRightAccountNumber);
 
-    //Transfer funds between accounts
-    account1.transfer(account2, 200);
-    System.out.println("-------------------------");
+    while (true) {
+      System.out.println("Choose your action");
+      System.out.println("1. Check Balance");
+      System.out.println("2. Make Deposit");
+      System.out.println("3. Make Withdrawal");
+      System.out.println("4. Make transfer");
+      System.out.println("0. Exit");
 
-    System.out.println("Latest account balance");
-    account1.printBalance();
-    account2.printBalance();
+      int input = sc.nextInt();
+
+      switch (input) {
+        case 1:
+          selectedAccount.printBalance();
+          break;
+
+        case 2:
+          System.out.println("Enter amount to deposit:");
+          double deposit = sc.nextDouble();
+          selectedAccount.deposit(deposit);
+          break;
+
+        case 3:
+          System.out.println("Enter amount to withdraw:");
+          double withdraw = sc.nextDouble();
+          selectedAccount.withdraw(withdraw);
+          break;
+
+        case 4:
+          System.out.println("Enter amount to transfer:");
+          double transferAmount = sc.nextDouble();
+            selectedAccount.transfer(account2, transferAmount);
+          break;
+
+        case 0:
+          System.out.println("Exiting...");
+          System.exit(0);
+
+        default:
+          System.out.println("Invalid choice. Please enter a number between 1 and 4.");
+      }
+    }
+
   }
 }
