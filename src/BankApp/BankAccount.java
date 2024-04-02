@@ -1,3 +1,5 @@
+package BankApp;
+
 public class BankAccount {
 
   private int id;
@@ -18,6 +20,11 @@ public class BankAccount {
   public int getId() {
     return id;
   }
+
+  public String getName() {
+    return name;
+  }
+
   public double getBalance() {
     return balance;
   }

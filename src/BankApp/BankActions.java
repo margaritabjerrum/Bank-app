@@ -1,25 +1,29 @@
+package BankApp;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
-public class Main {
-  public static void main(String[] args) {
+public class BankActions {
+  public ArrayList<BankAccount> accounts = new ArrayList<>();
 
-    ArrayList<BankAccount> accounts = new ArrayList<>();
-    accounts.add(new BankAccount(1001, "Margarita", 0));
-    accounts.add(new BankAccount(1002, "Allan", 0));
+  public BankActions() {
+    this.accounts.add(new BankAccount(1001, "Margarita", 0));
+    this.accounts.add(new BankAccount(1002, "Allan", 0));
+  }
 
 
+  public BankAccount selectOrCreateAccount() {
     Scanner sc = new Scanner(System.in);
-
     BankAccount selectedAccount = null;
 
-  do {
-    System.out.println("Do you have an existing account? (Y/N)");
-    String accountExists = sc.nextLine().toUpperCase();
+    do {
+      System.out.println("Do you have an existing account? (Y/N)");
 
-    if (accountExists.contains("Y")) {
+      String accountExists = sc.nextLine().toUpperCase();
 
+      if (accountExists.contains("Y")) {
         System.out.println("Enter your account id:");
         int id = sc.nextInt();
 
@@ -29,25 +33,36 @@ public class Main {
             System.out.println("Login successful");
           }
         }
-    } else if (accountExists.contains("N")) {
-      System.out.println("Enter your name to create new account:");
-      String name = sc.nextLine();
-      int id = accounts.size() + 1001;
-      selectedAccount = new BankAccount(id, name, 0);
-      accounts.add(selectedAccount);
-      System.out.println("Your account was created successfully");
-      System.out.println("Your account number for login in is --- " + id + " ---");
-    } else {
-      System.out.println("Invalid input. Please try again");
+
+      } else if (accountExists.contains("N")) {
+        System.out.println("Enter your name to create new account:");
+        String name = sc.nextLine();
+        int id = accounts.size() + 1001;
+        selectedAccount = new BankAccount(id, name, 0);
+        accounts.add(selectedAccount);
+        System.out.println("Your account was created successfully");
+        System.out.println("Your account number for login in is --- " + id + " ---");
+        try {
+          // Write the newly created account to a text file
+          FileWriter writer = new FileWriter("accounts.txt", true);
+          writer.write(selectedAccount.getId() + "," + selectedAccount.getName() + "," + selectedAccount.getBalance() + "\n");
+          writer.close();
+        } catch (IOException e) {
+          System.err.println("Error writing accounts data to CSV file: " + e.getMessage());
+        }
+      } else {
+        System.out.println("Invalid input. Please try again");
+      }
+
     }
 
+    while(selectedAccount == null);
+
+    return selectedAccount;
   }
 
-  while(selectedAccount == null);
-
-
-
-
+  public void accountInteractions(BankAccount selectedAccount) {
+    Scanner sc = new Scanner(System.in);
     while (true) {
       System.out.println("Choose your action");
       System.out.println("1. Check Balance");
@@ -88,7 +103,7 @@ public class Main {
               System.out.println("Invalid Id");
             }
           }
-            selectedAccount.transfer(accToTransferTo, transferAmount);
+          selectedAccount.transfer(accToTransferTo, transferAmount);
           break;
 
         case 0:
@@ -99,6 +114,7 @@ public class Main {
           System.out.println("Invalid choice. Please enter a number between 1 and 4.");
       }
     }
-
   }
+
+
 }
