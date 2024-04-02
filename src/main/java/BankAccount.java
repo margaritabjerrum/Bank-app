@@ -1,5 +1,3 @@
-package BankApp;
-
 public class BankAccount {
 
   private int id;
